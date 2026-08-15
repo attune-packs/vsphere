@@ -1,0 +1,24 @@
+ref: vsphere.vm_migrate
+label: "Migrate Virtual Machine"
+description: "Compute-migrate a VM to an explicit host and resource pool after validating current datastore access"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  vm_moid: {type: string, required: true}
+  host_moid: {type: string, required: true}
+  resource_pool_moid: {type: string, required: true}
+  priority: {type: string, enum: [lowPriority, defaultPriority, highPriority], default: defaultPriority}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, migrate]

@@ -1,0 +1,23 @@
+ref: vsphere.tag_association
+label: "Manage Tag Association"
+description: "List, attach, or detach a tag using an explicit object type and stable object MOID"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  operation: {type: string, required: true, enum: [list, attach, detach]}
+  object_type: {type: string, required: true, description: "vAPI dynamic object type such as VirtualMachine"}
+  object_moid: {type: string, required: true}
+  tag_id: {type: string, description: "Required for attach and detach"}
+  confirmation: {type: string, description: "Exact DETACH_TAG confirmation required for detach"}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [vsphere, tag, association]

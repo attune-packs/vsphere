@@ -1,0 +1,31 @@
+ref: vsphere.snapshot
+label: "Manage VM Snapshot"
+description: "List, create, revert, or delete a snapshot belonging to one VM MOID"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  operation: {type: string, required: true, enum: [list, create, revert, delete]}
+  vm_moid: {type: string, required: true}
+  snapshot_moid: {type: string, description: "Required for revert and delete"}
+  name: {type: string, description: "Required for create"}
+  description: {type: string, default: ""}
+  include_memory: {type: boolean, default: false}
+  quiesce: {type: boolean, default: false}
+  suppress_power_on: {type: boolean, default: true}
+  remove_children: {type: boolean, default: false}
+  consolidate: {type: boolean, default: true}
+  confirmation: {type: string, description: "Exact REVERT_SNAPSHOT or DELETE_SNAPSHOT confirmation"}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [vsphere, vm, snapshot]

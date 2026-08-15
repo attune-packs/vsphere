@@ -1,0 +1,23 @@
+ref: vsphere.vm_cpu_memory_set
+label: "Set VM CPU and Memory"
+description: "Reconfigure VM CPU count and/or memory by stable VM MOID"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  vm_moid: {type: string, required: true}
+  cpu_count: {type: integer, minimum: 1, maximum: 768}
+  memory_mib: {type: integer, minimum: 4, maximum: 25165824}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, hardware, cpu, memory]

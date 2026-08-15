@@ -1,0 +1,19 @@
+ref: vsphere.vm_get
+label: "Get Virtual Machine"
+description: "Get one VM by stable MOID with path, runtime, hardware, and VMware Tools details"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  vm_moid: {type: string, required: true}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, discovery]

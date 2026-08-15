@@ -1,0 +1,31 @@
+ref: vsphere.vm_disk
+label: "Reconfigure VM Disk"
+description: "Add, grow, detach, or permanently remove one VM disk using explicit device, controller, and datastore MOIDs"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  operation: {type: string, required: true, enum: [add, resize, remove]}
+  vm_moid: {type: string, required: true}
+  device_key: {type: integer, description: "Required for resize and remove"}
+  controller_key: {type: integer, description: "Explicit SCSI controller key required for add"}
+  unit_number: {type: integer, minimum: 0, maximum: 63, description: "Explicit unused controller unit required for add"}
+  datastore_moid: {type: string, description: "Explicit datastore required for add"}
+  size_gib: {type: integer, minimum: 1, maximum: 65536}
+  thin_provisioned: {type: boolean, default: true}
+  minimum_free_gib: {type: integer, default: 0, minimum: 0, maximum: 2147483647}
+  delete_backing: {type: boolean, default: false, description: "For remove, permanently destroy backing instead of detach"}
+  confirmation: {type: string, description: "Exact REMOVE_DISK confirmation required for remove"}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, hardware, disk]

@@ -1,0 +1,27 @@
+ref: vsphere.vm_relocate
+label: "Relocate Virtual Machine"
+description: "Storage/compute relocate a VM to explicit datastore, resource pool, and optional host placement"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  vm_moid: {type: string, required: true}
+  datastore_moid: {type: string, required: true}
+  resource_pool_moid: {type: string, required: true}
+  host_moid: {type: string}
+  minimum_free_gib: {type: integer, default: 0, minimum: 0, maximum: 2147483647}
+  disk_move_type: {type: string, enum: [moveAllDiskBackingsAndDisallowSharing, moveAllDiskBackingsAndAllowSharing, createNewChildDiskBacking], default: moveAllDiskBackingsAndDisallowSharing}
+  priority: {type: string, enum: [lowPriority, defaultPriority, highPriority], default: defaultPriority}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, relocate, storage]

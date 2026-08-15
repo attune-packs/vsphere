@@ -1,0 +1,21 @@
+ref: vsphere.vm_list
+label: "List Virtual Machines"
+description: "List VMs with stable MOIDs, explicit inventory paths, power state, and template status"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  path_prefix: {type: string, description: "Absolute inventory path prefix"}
+  template: {type: boolean, description: "Filter by template flag when supplied"}
+  limit: {type: integer, default: 1000, minimum: 1, maximum: 5000}
+output:
+  operation: {type: string}
+  data: {type: array, items: {type: object}}
+  meta: {type: object}
+tags: [vsphere, vm, discovery]

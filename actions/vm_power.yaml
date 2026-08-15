@@ -1,0 +1,23 @@
+ref: vsphere.vm_power
+label: "Change VM Power State"
+description: "Explicitly power on/off, guest shutdown/reboot, suspend, or hard reset one VM"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  operation: {type: string, required: true, enum: [power_on, power_off, shutdown_guest, reboot_guest, suspend, reset]}
+  vm_moid: {type: string, required: true}
+  confirmation: {type: string, description: "Exact POWER_OFF or RESET confirmation required for hard operations"}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, power]

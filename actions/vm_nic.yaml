@@ -1,0 +1,28 @@
+ref: vsphere.vm_nic
+label: "Reconfigure VM NIC"
+description: "Add, edit, or remove one VM NIC using explicit device and network MOIDs"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: vsphere_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  operation: {type: string, required: true, enum: [add, edit, remove]}
+  vm_moid: {type: string, required: true}
+  device_key: {type: integer, description: "Required for edit and remove"}
+  network_moid: {type: string, description: "Required for add and edit"}
+  model: {type: string, enum: [vmxnet3, e1000e], default: vmxnet3}
+  start_connected: {type: boolean, default: true}
+  allow_guest_control: {type: boolean, default: true}
+  confirmation: {type: string, description: "Exact REMOVE_NIC confirmation required for remove"}
+  task_timeout_seconds: {type: integer, default: 600, minimum: 1, maximum: 7200}
+  poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
+output:
+  operation: {type: string}
+  data: {type: object}
+  meta: {type: object}
+tags: [vsphere, vm, hardware, network]

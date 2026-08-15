@@ -1,0 +1,37 @@
+ref: vsphere
+label: "VMware vSphere"
+description: "Safe vCenter inventory, VM lifecycle, hardware, snapshot, tag, migration, and guest operations"
+version: "0.1.0"
+author: "Attune; adapted from work by Paul Mulvihill and StackStorm Exchange contributors"
+email: "support@attune.systems"
+system: false
+enabled: true
+
+conf_schema: {}
+config: {}
+
+meta:
+  category: infrastructure
+  documentation_url: "https://developer.broadcom.com/xapis/vsphere-web-services-api/latest/"
+  repository_url: "https://github.com/attune-packs/vsphere"
+  source_revision: "eed7a36730d4e3f3c9463b256e5009374acd6072"
+  source_version: "1.3.5"
+  license: "Apache-2.0"
+
+tags: [vsphere, vmware, vcenter, virtualization, infrastructure]
+runtime_deps: [python]
+dependencies: []
+
+testing:
+  enabled: true
+  discovery:
+    method: directory
+    path: tests
+  runners:
+    python:
+      type: unittest
+      entry_point: tests/test_pack.py
+      timeout: 120
+      result_format: simple
+  min_pass_rate: 1.0
+  on_failure: block

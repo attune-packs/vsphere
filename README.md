@@ -11,7 +11,7 @@ of the compatibility evidence.
 - Python 3.10 or newer and `pyvmomi==9.1.0.0` on the Attune worker.
 - Network access to a vCenter endpoint. Tags require vCenter, not standalone ESXi.
 - Least-privilege vCenter permissions for only the selected actions.
-- An encrypted, pack-owned vCenter profile Attune Key, normally `vsphere.vcenter`.
+- An encrypted, pack-owned vCenter profile Attune Key, normally `pack.vsphere.vcenter`.
 - A separate encrypted guest credential Key for guest process/file actions.
 - `ATTUNE_ARTIFACTS_DIR` for guest uploads and downloads.
 
@@ -38,7 +38,7 @@ file is provided. The socket timeout is applied for the action's SOAP lifetime
 and restored during cleanup. REST and guest transfer requests also use bounded
 timeouts, reject redirects, and use the same verified TLS context.
 
-The guest credential Key, normally `vsphere.guest`, is separate:
+The guest credential Key, normally `pack.vsphere.guest`, is separate:
 
 ```json
 {"username":"guest-automation","password":"REDACTED"}

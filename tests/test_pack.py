@@ -78,7 +78,7 @@ class MetadataTests(unittest.TestCase):
                     self.assertRegex(text, rf"(?m)^{field}: {re.escape(value)}$")
                 self.assertIn("default_execution_permission_set_refs: [standard]", text)
                 self.assertRegex(
-                    text, r"profile_key: \{[^\n]*default: vsphere\.vcenter"
+                    text, r"profile_key: \{[^\n]*default: pack\.vsphere\.vcenter"
                 )
                 for output in ("operation", "data", "meta"):
                     self.assertRegex(text, rf"(?m)^  {output}: \{{type:")
@@ -90,7 +90,7 @@ class MetadataTests(unittest.TestCase):
         for name in ("guest_process", "guest_file"):
             self.assertRegex(
                 self.actions[name],
-                r"guest_credential_key: \{[^\n]*default: vsphere\.guest",
+                r"guest_credential_key: \{[^\n]*default: pack\.vsphere\.guest",
             )
         self.assertRegex(
             self.actions["guest_process"], r"arguments: \{[^\n]*secret: true"
@@ -192,14 +192,17 @@ class ValidationTests(unittest.TestCase):
         with mock.patch.dict(sys.modules, modules):
             self.assertEqual(
                 "vc.invalid",
-                client._fetch_key("vsphere.vcenter", "vCenter profile")["host"],
+                client._fetch_key("pack.vsphere.vcenter", "vCenter profile")["host"],
             )
+        fake_secrets.get_key.sync_detailed.assert_called_once_with(
+            "pack.vsphere.vcenter", client=fake_attune.context.client
+        )
         fake_secrets.get_key.sync_detailed.side_effect = RuntimeError("DO-NOT-LEAK")
         with (
             mock.patch.dict(sys.modules, modules),
             self.assertRaises(client.VspherePackError) as caught,
         ):
-            client._fetch_key("vsphere.vcenter", "vCenter profile")
+            client._fetch_key("pack.vsphere.vcenter", "vCenter profile")
         self.assertNotIn("DO-NOT-LEAK", str(caught.exception))
 
 

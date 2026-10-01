@@ -17,8 +17,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode, urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, HTTPSHandler, Request, build_opener
 
-DEFAULT_PROFILE_KEY = "vsphere.vcenter"
-DEFAULT_GUEST_KEY = "vsphere.guest"
+DEFAULT_PROFILE_KEY = "pack.vsphere.vcenter"
+DEFAULT_GUEST_KEY = "pack.vsphere.guest"
 MAX_API_RESPONSE = 4 * 1024 * 1024
 MAX_GUEST_FILE = 128 * 1024 * 1024
 MOID_PATTERN = re.compile(
@@ -46,7 +46,7 @@ def _fetch_key(key_ref: str, purpose: str) -> dict[str, Any]:
         import attune
         from attune.api_client.api.secrets import get_key
 
-        response = get_key.sync_detailed(client=attune.context.client, key_ref=key_ref)
+        response = get_key.sync_detailed(key_ref, client=attune.context.client)
     except Exception as exc:
         raise VspherePackError(
             f"could not read {purpose} Key ({type(exc).__name__})"

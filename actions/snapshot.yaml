@@ -10,7 +10,7 @@ parameter_format: json
 output_format: json
 default_execution_permission_set_refs: [standard]
 parameters:
-  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  profile_key: {type: string, default: pack.vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
   operation: {type: string, required: true, enum: [list, create, revert, delete]}
   vm_moid: {type: string, required: true}
   snapshot_moid: {type: string, description: "Required for revert and delete"}

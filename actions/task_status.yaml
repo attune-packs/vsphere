@@ -10,7 +10,7 @@ parameter_format: json
 output_format: json
 default_execution_permission_set_refs: [standard]
 parameters:
-  profile_key: {type: string, default: vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
+  profile_key: {type: string, default: pack.vsphere.vcenter, required: true, description: "Pack-owned encrypted vCenter profile Key ref"}
   task_moid: {type: string, required: true}
   wait_seconds: {type: integer, default: 0, minimum: 0, maximum: 300}
   poll_interval_seconds: {type: integer, default: 2, minimum: 1, maximum: 10}
